@@ -40,6 +40,8 @@ You are free to use any language or tools you desire. Just be aware that
 we are a Go, Python, and JavaScript shop currently, but we aren't afraid
 of using different tech given the proper circumstances.
 
+Use any weather API of your choosing.
+
 ### Objectives
 
 * Under no circumstances should any of the users information be publicly
@@ -64,6 +66,10 @@ available.
 * Any CI/CD solution
 
 * A web based user interface
+
+* Scrape [randomlists.com](https://www.randomlists.com/random-addresses) to 
+    generate your own user dataset. (Please scrape responsibly. 
+    Don't scrape too much or too often)
 
 ## Credits
 
