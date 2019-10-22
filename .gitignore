@@ -1,0 +1,5 @@
+venv
+addresses.csv
+emails.csv
+names.csv
+*.idea
