@@ -69,7 +69,9 @@ available.
 
 * Scrape [randomlists.com](https://www.randomlists.com/random-addresses) to 
     generate your own user dataset. (Please scrape responsibly. 
-    Don't scrape too much or too often)
+    Don't scrape too much or too often. I've emailed the dev to let me buy
+    him some beers in preparation for this, but he hasn't got back to me yet
+    and I'd like to not spend hundreds of dollars on beers for our friend.)
 
 ## Credits
 
