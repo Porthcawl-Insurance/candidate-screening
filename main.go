@@ -5,42 +5,15 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Duke9289/candidate-screening/db"
+	"github.com/Duke9289/candidate-screening/auth"
+	"github.com/Duke9289/candidate-screening/controllers"
 	"github.com/spf13/viper"
 
 	"github.com/gorilla/mux"
 )
 
-func homeLink(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Send a request to /person?firstName=[FIRSTNAME]&lastName=[LASTNAME]")
-}
-
-func personLink(w http.ResponseWriter, r *http.Request) {
-	firstName := mux.Vars(r)["firstName"]
-	lastName := mux.Vars(r)["lastName"]
-
-	zip := db.GetZipCodeByFirstAndLastName(firstName, lastName)
-	log.Println("returned zip:", zip)
-	apiUrl := viper.GetString("api.url")
-	apiKey := viper.GetString("api.appid")
-	url := fmt.Sprintf("%szip=%d&appid=%s", apiUrl, zip, apiKey)
-
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		log.Fatal("NewRequest:", err)
-		return
-	}
-
-	client := &http.Client{}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal("Do:", err)
-		return
-	}
-	defer resp.Body.Close()
-	resp.Write(w)
-
+func home(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Send a request to /person?email=[EMAIL]")
 }
 
 func main() {
@@ -51,9 +24,28 @@ func main() {
 	if err != nil {
 		panic(fmt.Errorf("fatal error config file: %s \n", err))
 	}
+
 	router := mux.NewRouter().StrictSlash(true)
 
-	router.HandleFunc("/", homeLink)
-	router.HandleFunc("/person", personLink).Methods("GET").Queries("firstName", "{firstName}", "lastName", "{lastName}")
+	router.Use(CommonMiddleware)
+
+	router.HandleFunc("/", home)
+	router.HandleFunc("/register", controllers.CreateUser).Methods("POST")
+	router.HandleFunc("/login", controllers.Login).Methods("POST")
+
+	s := router.PathPrefix("/auth").Subrouter()
+	s.Use(auth.JwtVerify)
+
+	s.HandleFunc("/person", controllers.MyWeather).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8080", router))
+}
+
+func CommonMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, Access-Control-Request-Headers, Access-Control-Request-Method, Connection, Host, Origin, User-Agent, Referer, Cache-Control, X-header")
+		next.ServeHTTP(w, r)
+	})
 }
