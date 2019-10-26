@@ -13,10 +13,11 @@ import (
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Send a request to /person?email=[EMAIL]")
+	fmt.Fprintf(w, "Health check OK")
 }
 
 func main() {
+	log.Println("Beginning weather api service")
 
 	viper.SetConfigName("configuration")
 	viper.AddConfigPath(".")
@@ -24,6 +25,7 @@ func main() {
 	if err != nil {
 		panic(fmt.Errorf("fatal error config file: %s \n", err))
 	}
+	log.Println("Configuration loaded")
 
 	router := mux.NewRouter().StrictSlash(true)
 
@@ -41,6 +43,7 @@ func main() {
 	a.Use(auth.JwtVerifyAdmin)
 	a.HandleFunc("/users", controllers.GetAllUsers).Methods("GET")
 	a.HandleFunc("/userWeather/{id}", controllers.GetUserWeather).Methods("GET")
+	log.Println("Router set")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 

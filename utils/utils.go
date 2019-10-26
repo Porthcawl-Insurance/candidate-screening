@@ -11,6 +11,7 @@ import (
 )
 
 func SendApiRequest(zip int) (resp *http.Response) {
+	log.Println("Sending API request")
 	apiUrl := viper.GetString("api.url")
 	apiKey := viper.GetString("api.appid")
 	url := fmt.Sprintf("%szip=%d&appid=%s", apiUrl, zip, apiKey)
@@ -32,6 +33,7 @@ func SendApiRequest(zip int) (resp *http.Response) {
 }
 
 func ParseApiResponse(resp *http.Response) (main, detail string) {
+	log.Println("Successfully received API response, parsing")
 
 	type WeatherJson struct {
 		Main        string `json:"main"`

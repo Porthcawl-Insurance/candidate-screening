@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/cyberfortress/candidate-screening/structs"
 	"github.com/jinzhu/gorm"
@@ -11,6 +12,7 @@ import (
 )
 
 func ConnectDB() *gorm.DB {
+	log.Println("Initializing database connection")
 	viper.SetConfigName("configuration")
 	viper.AddConfigPath(".")
 	err := viper.ReadInConfig()
@@ -31,6 +33,7 @@ func ConnectDB() *gorm.DB {
 		panic(err)
 	}
 
+	log.Println("Creating tables if necessary...")
 	db.AutoMigrate(&structs.UserCreds{})
 
 	db.AutoMigrate(&structs.UserAccount{})

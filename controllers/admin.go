@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/cyberfortress/candidate-screening/structs"
@@ -11,6 +12,7 @@ import (
 )
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
+	log.Println("Admin request for user list")
 	var users []structs.UserAccount
 	database.Find(&users)
 
@@ -19,6 +21,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 
 func GetUserWeather(w http.ResponseWriter, r *http.Request) {
 	userId := mux.Vars(r)["id"]
+	log.Println("Admin requst for weather for user id: ", userId)
 	userAccount := &structs.UserAccount{}
 	database.Where("Id = ?", userId).First(userAccount)
 	resp := utils.SendApiRequest(userAccount.Zip)

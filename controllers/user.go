@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -27,6 +28,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	user := &structs.UserCreds{}
 	json.NewDecoder(r.Body).Decode(user)
 
+	log.Println("Creating new user")
+
 	pass, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		fmt.Println(err)
@@ -45,12 +48,15 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if createdUser.Error != nil {
 		fmt.Println(errMessage)
 	}
+	log.Println("Successfully created user")
 	json.NewEncoder(w).Encode(createdUser)
 }
 
 func MyWeather(w http.ResponseWriter, r *http.Request) {
 	token := r.Context().Value("user").(*structs.Token)
 	userAccount := &structs.UserAccount{}
+	log.Println("Getting weather request for user id: ", token.Id)
+
 	email := token.Email
 	database.Where("Email = ?", email).First(userAccount)
 
@@ -66,6 +72,8 @@ func MyWeather(w http.ResponseWriter, r *http.Request) {
 func Login(w http.ResponseWriter, r *http.Request) {
 	userCreds := &structs.UserCreds{}
 	err := json.NewDecoder(r.Body).Decode(userCreds)
+
+	log.Println("Login request for email: ", userCreds.Email)
 	if err != nil {
 		var resp = map[string]interface{}{"status": false, "message": "Invalid request"}
 		json.NewEncoder(w).Encode(resp)
