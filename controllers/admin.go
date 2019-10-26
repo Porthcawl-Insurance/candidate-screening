@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Duke9289/candidate-screening/structs"
-	"github.com/Duke9289/candidate-screening/utils"
+	"github.com/cyberfortress/candidate-screening/structs"
+	"github.com/cyberfortress/candidate-screening/utils"
 	"github.com/gorilla/mux"
 )
 

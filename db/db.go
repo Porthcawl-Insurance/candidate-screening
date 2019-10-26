@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"github.com/Duke9289/candidate-screening/structs"
+	"github.com/cyberfortress/candidate-screening/structs"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 

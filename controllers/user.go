@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Duke9289/candidate-screening/db"
-	"github.com/Duke9289/candidate-screening/structs"
-	"github.com/Duke9289/candidate-screening/utils"
+	"github.com/cyberfortress/candidate-screening/db"
+	"github.com/cyberfortress/candidate-screening/structs"
+	"github.com/cyberfortress/candidate-screening/utils"
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )

@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Duke9289/candidate-screening/auth"
-	"github.com/Duke9289/candidate-screening/controllers"
+	"github.com/cyberfortress/candidate-screening/auth"
+	"github.com/cyberfortress/candidate-screening/controllers"
 	"github.com/spf13/viper"
 
 	"github.com/gorilla/mux"
