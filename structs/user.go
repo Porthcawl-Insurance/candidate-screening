@@ -6,6 +6,7 @@ type UserCreds struct {
 	gorm.Model
 	Email    string `gorm:"type:varchar(100);unique_index"`
 	Password string `json:"Password"`
+	Role     string `json:"Role"`
 }
 
 type UserAccount struct {

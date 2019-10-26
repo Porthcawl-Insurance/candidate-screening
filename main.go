@@ -35,8 +35,12 @@ func main() {
 
 	s := router.PathPrefix("/auth").Subrouter()
 	s.Use(auth.JwtVerify)
-
 	s.HandleFunc("/person", controllers.MyWeather).Methods("GET")
+
+	a := router.PathPrefix("/admin").Subrouter()
+	a.Use(auth.JwtVerifyAdmin)
+	a.HandleFunc("/users", controllers.GetAllUsers).Methods("GET")
+	a.HandleFunc("/userWeather/{id}", controllers.GetUserWeather).Methods("GET")
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 

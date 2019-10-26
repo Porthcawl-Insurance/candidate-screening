@@ -17,8 +17,9 @@ type Exception structs.Exception
 func JwtVerify(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		var header = r.Header.Get("x-access-token") //Grab the token from the header
+		var header = r.Header.Get("Authorization") //Grab the token from the header
 
+		header = strings.TrimPrefix(header, "Bearer")
 		header = strings.TrimSpace(header)
 
 		if header == "" {
@@ -47,8 +48,9 @@ func JwtVerify(next http.Handler) http.Handler {
 func JwtVerifyAdmin(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		var header = r.Header.Get("x-access-token") //Grab the token from the header
+		var header = r.Header.Get("Authorization") //Grab the token from the header
 
+		header = strings.TrimPrefix(header, "Bearer")
 		header = strings.TrimSpace(header)
 
 		if header == "" {
@@ -70,7 +72,7 @@ func JwtVerifyAdmin(next http.Handler) http.Handler {
 		}
 
 		//&{1 tariq tariq.riahi@gmail.com 0xc000210f60}
-		fmt.Println(tk)
+		fmt.Println("Admin page request by: ", tk)
 		if tk.Role == "basic" {
 			w.WriteHeader(http.StatusForbidden)
 			json.NewEncoder(w).Encode(Exception{Message: "You are not allowed to be here."})

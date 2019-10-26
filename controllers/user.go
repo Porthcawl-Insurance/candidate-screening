@@ -3,15 +3,13 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
 
 	"github.com/Duke9289/candidate-screening/db"
 	"github.com/Duke9289/candidate-screening/structs"
+	"github.com/Duke9289/candidate-screening/utils"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/spf13/viper"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -39,6 +37,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user.Password = string(pass)
+	user.Role = "basic"
 
 	createdUser := database.Create(user)
 	var errMessage = createdUser.Error
@@ -55,44 +54,12 @@ func MyWeather(w http.ResponseWriter, r *http.Request) {
 	email := token.Email
 	database.Where("Email = ?", email).First(userAccount)
 
-	apiUrl := viper.GetString("api.url")
-	apiKey := viper.GetString("api.appid")
-	url := fmt.Sprintf("%szip=%d&appid=%s", apiUrl, userAccount.Zip, apiKey)
-
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		log.Fatal("NewRequest:", err)
-		return
-	}
-
-	client := &http.Client{}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal("Do:", err)
-		return
-	}
+	resp := utils.SendApiRequest(userAccount.Zip)
 	defer resp.Body.Close()
 
-	type WeatherJson struct {
-		Main        string `json:"main"`
-		Description string `json:"description"`
-	}
-	type ApiBody struct {
-		Weather []WeatherJson `json:"weather"`
-	}
-	desc := ApiBody{}
-	body, readErr := ioutil.ReadAll(resp.Body)
-	if readErr != nil {
-		log.Fatal("Read error: ", readErr)
-	}
-	err = json.Unmarshal(body, &desc)
-	if err != nil {
-		log.Fatal("Unmarshal error: ", err)
-	}
+	main, detail := utils.ParseApiResponse(resp)
 	fmt.Fprintf(w, "Right now, the weather is %s, specifically, %s",
-		desc.Weather[0].Main,
-		desc.Weather[0].Description)
+		main, detail)
 
 }
 
@@ -126,6 +93,7 @@ func FindOne(email, password string) map[string]interface{} {
 	tk := &structs.Token{
 		UserID: user.ID,
 		Email:  user.Email,
+		Role:   user.Role,
 		StandardClaims: &jwt.StandardClaims{
 			ExpiresAt: expiresAt,
 		},
