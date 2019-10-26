@@ -10,23 +10,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-//func GetZipCodeByFirstAndLastName(email string) (zip int) {
-//	database, err := sql.Open(viper.GetString("db.schema"), viper.GetString("db.url"))
-//	if err != nil {
-//		log.Println("Error opening the database:", err)
-//	}
-//	defer database.Close()
-//
-//	sqlText := fmt.Sprintf("SELECT zip FROM user_information WHERE email = '%s'", email)
-//
-//	row := database.QueryRow(sqlText)
-//	err = row.Scan(&zip)
-//	if err != nil {
-//		log.Println("User not found in db:", email)
-//	}
-//	return
-//}
-
 func ConnectDB() *gorm.DB {
 	viper.SetConfigName("configuration")
 	viper.AddConfigPath(".")
