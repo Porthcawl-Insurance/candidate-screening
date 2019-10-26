@@ -1,3 +1,11 @@
 [api]
 url = "https://api.openweathermap.org/data/2.5/weather?"
 appid = YOUR APP ID HERE
+
+[db]
+name = "weather_api"
+schema = "postgres"
+url = YOUR POSTGRES URL HERE
+port = YOUR POSTGRES PORT HERE
+user = YOUR POSTGRES USERNAME HERE
+password = YOUR POSTGRES PASSWORD HERE
