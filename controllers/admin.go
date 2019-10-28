@@ -23,7 +23,12 @@ func GetUserWeather(w http.ResponseWriter, r *http.Request) {
 	userId := mux.Vars(r)["id"]
 	log.Println("Admin requst for weather for user id: ", userId)
 	userAccount := &structs.UserAccount{}
-	database.Where("Id = ?", userId).First(userAccount)
+	recordNotFound := database.Where("Id = ?", userId).First(userAccount).RecordNotFound()
+	if recordNotFound {
+		fmt.Fprintf(w, "No record found for user account %s", userId)
+		return
+	}
+
 	resp := utils.SendApiRequest(userAccount.Zip)
 	defer resp.Body.Close()
 
