@@ -46,16 +46,32 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	var errMessage = createdUser.Error
 
 	if createdUser.Error != nil {
-		fmt.Println(errMessage)
+		log.Println(errMessage)
 	}
 	log.Println("Successfully created user")
 	json.NewEncoder(w).Encode(createdUser)
 }
 
+func UpdateUserAccount(w http.ResponseWriter, r *http.Request) {
+	log.Println("Updating user account")
+	userAccount := &structs.UserAccount{}
+	json.NewDecoder(r.Body).Decode(userAccount)
+	token := r.Context().Value("user").(*structs.Token)
+	userAccount.ID = token.UserID
+	userAccount.Email = token.Email
+	savedUser := database.Save(userAccount)
+
+	if savedUser.Error != nil {
+		log.Println(savedUser.Error)
+	}
+	log.Println("User account updated")
+	json.NewEncoder(w).Encode(savedUser)
+}
+
 func MyWeather(w http.ResponseWriter, r *http.Request) {
 	token := r.Context().Value("user").(*structs.Token)
 	userAccount := &structs.UserAccount{}
-	log.Println("Getting weather request for user id: ", token.Id)
+	log.Println("Getting weather request for user id: ", token.UserID)
 
 	email := token.Email
 	database.Where("Email = ?", email).First(userAccount)
@@ -63,9 +79,8 @@ func MyWeather(w http.ResponseWriter, r *http.Request) {
 	resp := utils.SendApiRequest(userAccount.Zip)
 	defer resp.Body.Close()
 
-	main, detail := utils.ParseApiResponse(resp)
-	fmt.Fprintf(w, "Right now, the weather is %s, specifically, %s",
-		main, detail)
+	respString := utils.ParseApiResponse(resp)
+	fmt.Fprint(w, respString)
 
 }
 

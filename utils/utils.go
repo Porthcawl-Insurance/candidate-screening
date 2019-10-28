@@ -32,27 +32,40 @@ func SendApiRequest(zip int) (resp *http.Response) {
 	return
 }
 
-func ParseApiResponse(resp *http.Response) (main, detail string) {
+func ParseApiResponse(resp *http.Response) (respString string) {
 	log.Println("Successfully received API response, parsing")
 
-	type WeatherJson struct {
-		Main        string `json:"main"`
-		Description string `json:"description"`
-	}
-	type ApiBody struct {
-		Weather []WeatherJson `json:"weather"`
-	}
-	desc := ApiBody{}
-	body, readErr := ioutil.ReadAll(resp.Body)
-	if readErr != nil {
-		log.Fatal("Read error: ", readErr)
-	}
-	err := json.Unmarshal(body, &desc)
-	if err != nil {
-		log.Fatal("Unmarshal error: ", err)
-	}
+	switch respCode := resp.StatusCode; respCode {
+	case 200:
+		type WeatherJson struct {
+			Main        string `json:"main"`
+			Description string `json:"description"`
+		}
+		type ApiBody struct {
+			Weather []WeatherJson `json:"weather"`
+		}
+		desc := ApiBody{}
+		body, readErr := ioutil.ReadAll(resp.Body)
+		if readErr != nil {
+			log.Fatal("Read error: ", readErr)
+		}
+		err := json.Unmarshal(body, &desc)
+		if err != nil {
+			log.Fatal("Unmarshal error: ", err)
+		}
 
-	main = desc.Weather[0].Main
-	detail = desc.Weather[0].Description
-	return
+		main := desc.Weather[0].Main
+		detail := desc.Weather[0].Description
+
+		respString = fmt.Sprintf("Right now, the weather is %s, specifically %s", main, detail)
+		return
+	case 400, 404:
+		respString = "Location was not found, please confirm ZIP code is accurate"
+		return
+	case 401:
+		fallthrough
+	default:
+		respString = "Error connecting to the weather API service, please try again later"
+		return
+	}
 }
