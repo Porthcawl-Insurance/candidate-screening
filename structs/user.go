@@ -11,11 +11,11 @@ type UserCreds struct {
 
 type UserAccount struct {
 	gorm.Model
-	Address    string
-	City       string
-	State      string
-	Zip        int
-	Email      string
-	First_name string
-	Last_name  string
+	Address    string `json:"Address"`
+	City       string `json:"City"`
+	State      string `json:"State"`
+	Zip        int    `json:"Zip"`
+	Email      string `json:"Email"`
+	First_name string `json:"FirstName"`
+	Last_name  string `json:"LastName"`
 }

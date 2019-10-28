@@ -18,7 +18,7 @@ func SendApiRequest(zip int) (resp *http.Response) {
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		log.Fatal("NewRequest:", err)
+		log.Println("Error creating API request:", err)
 		return
 	}
 
@@ -26,7 +26,7 @@ func SendApiRequest(zip int) (resp *http.Response) {
 
 	resp, err = client.Do(req)
 	if err != nil {
-		log.Fatal("Do:", err)
+		log.Println("Error sending API request:", err)
 		return
 	}
 	return
@@ -47,11 +47,11 @@ func ParseApiResponse(resp *http.Response) (respString string) {
 		desc := ApiBody{}
 		body, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
-			log.Fatal("Read error: ", readErr)
+			log.Println("Read error: ", readErr)
 		}
 		err := json.Unmarshal(body, &desc)
 		if err != nil {
-			log.Fatal("Unmarshal error: ", err)
+			log.Println("Unmarshal error: ", err)
 		}
 
 		main := desc.Weather[0].Main

@@ -7,7 +7,6 @@ import (
 
 	"github.com/cyberfortress/candidate-screening/auth"
 	"github.com/cyberfortress/candidate-screening/controllers"
-	"github.com/spf13/viper"
 
 	"github.com/gorilla/mux"
 )
@@ -19,14 +18,6 @@ func home(w http.ResponseWriter, r *http.Request) {
 func main() {
 	log.Println("Beginning weather api service")
 
-	viper.SetConfigName("configuration")
-	viper.AddConfigPath(".")
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(fmt.Errorf("fatal error config file: %s \n", err))
-	}
-	log.Println("Configuration loaded")
-
 	router := mux.NewRouter().StrictSlash(true)
 
 	router.Use(CommonMiddleware)
@@ -37,7 +28,8 @@ func main() {
 
 	s := router.PathPrefix("/auth").Subrouter()
 	s.Use(auth.JwtVerify)
-	s.HandleFunc("/person", controllers.MyWeather).Methods("GET")
+	s.HandleFunc("/update", controllers.UpdateUserAccount).Methods("POST")
+	s.HandleFunc("/weather", controllers.MyWeather).Methods("GET")
 
 	a := router.PathPrefix("/admin").Subrouter()
 	a.Use(auth.JwtVerifyAdmin)
