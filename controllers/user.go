@@ -49,7 +49,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		log.Println(errMessage)
 	}
 	log.Println("Successfully created user")
-	json.NewEncoder(w).Encode(createdUser)
+	fmt.Fprint(w, "User successfully created, you may now log in")
 }
 
 func UpdateUserAccount(w http.ResponseWriter, r *http.Request) {
@@ -76,10 +76,12 @@ func MyWeather(w http.ResponseWriter, r *http.Request) {
 	email := token.Email
 	database.Where("Email = ?", email).First(userAccount)
 
-	resp := utils.SendApiRequest(userAccount.Zip)
+	rh := utils.NewRequestHandler(utils.SendApiRequest, utils.ParseApiResponse)
+
+	resp := rh.SendApiRequest(userAccount.Zip)
 	defer resp.Body.Close()
 
-	respString := utils.ParseApiResponse(resp)
+	respString := rh.ParseApiResponse(resp)
 	fmt.Fprint(w, respString)
 
 }
@@ -108,7 +110,7 @@ func FindOne(email, password string) map[string]interface{} {
 	expiresAt := time.Now().Add(time.Minute * 100000).Unix()
 
 	errf := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
-	if errf != nil && errf == bcrypt.ErrMismatchedHashAndPassword { //Password does not match!
+	if errf != nil && errf == bcrypt.ErrMismatchedHashAndPassword {
 		var resp = map[string]interface{}{"status": false, "message": "Invalid login credentials. Please try again"}
 		return resp
 	}
@@ -130,7 +132,7 @@ func FindOne(email, password string) map[string]interface{} {
 	}
 
 	var resp = map[string]interface{}{"status": false, "message": "logged in"}
-	resp["token"] = tokenString //Store the token in the response
+	resp["token"] = tokenString
 	resp["user"] = user
 	return resp
 }

@@ -29,10 +29,12 @@ func GetUserWeather(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := utils.SendApiRequest(userAccount.Zip)
+	rh := utils.NewRequestHandler(utils.SendApiRequest, utils.ParseApiResponse)
+
+	resp := rh.SendApiRequest(userAccount.Zip)
 	defer resp.Body.Close()
 
-	respString := utils.ParseApiResponse(resp)
-	fmt.Fprintf(w, "%s, for user account %s",
+	respString := rh.ParseApiResponse(resp)
+	fmt.Fprintf(w, "%s for user account %s",
 		respString, string(userId))
 }

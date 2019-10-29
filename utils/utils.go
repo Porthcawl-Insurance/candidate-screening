@@ -10,6 +10,19 @@ import (
 	"github.com/spf13/viper"
 )
 
+type ApiReqester func(zip int) (resp *http.Response)
+
+type ResponseParser func(resp *http.Response) (respString string)
+
+type RequestHandler struct {
+	SendApiRequest   ApiReqester
+	ParseApiResponse ResponseParser
+}
+
+func NewRequestHandler(ar ApiReqester, rp ResponseParser) *RequestHandler {
+	return &RequestHandler{SendApiRequest: ar, ParseApiResponse: rp}
+}
+
 func SendApiRequest(zip int) (resp *http.Response) {
 	log.Println("Sending API request")
 	apiUrl := viper.GetString("api.url")
@@ -55,9 +68,12 @@ func ParseApiResponse(resp *http.Response) (respString string) {
 		}
 
 		main := desc.Weather[0].Main
-		detail := desc.Weather[0].Description
 
-		respString = fmt.Sprintf("Right now, the weather is %s, specifically %s", main, detail)
+		if stringInSlice(main, []string{"Rain", "Thunderstorm", "Drizzle"}) {
+			respString = "Right now, it IS raining"
+		} else {
+			respString = "Right now, it is NOT raining"
+		}
 		return
 	case 400, 404:
 		respString = "Location was not found, please confirm ZIP code is accurate"
@@ -68,4 +84,13 @@ func ParseApiResponse(resp *http.Response) (respString string) {
 		respString = "Error connecting to the weather API service, please try again later"
 		return
 	}
+}
+
+func stringInSlice(str string, list []string) bool {
+	for _, s := range list {
+		if s == str {
+			return true
+		}
+	}
+	return false
 }
