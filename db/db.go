@@ -14,7 +14,7 @@ import (
 func ConnectDB() *gorm.DB {
 	log.Println("Initializing database connection")
 	viper.SetConfigName("configuration")
-	viper.AddConfigPath(".")
+	viper.AddConfigPath("$HOME/go/src/github.com/cyberfortress/candidate-screening")
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("fatal error config file: %s \n", err))
