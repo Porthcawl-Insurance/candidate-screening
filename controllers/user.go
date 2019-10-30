@@ -57,7 +57,12 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 func UpdateUserAccount(w http.ResponseWriter, r *http.Request) {
 	log.Println("Updating user account")
 	userAccount := &structs.UserAccount{}
-	json.NewDecoder(r.Body).Decode(userAccount)
+	err := json.NewDecoder(r.Body).Decode(userAccount)
+	if err != nil {
+		log.Println(err)
+		fmt.Fprint(w, "Error updating user information")
+		return
+	}
 	token := r.Context().Value("user").(*structs.Token)
 	userAccount.ID = token.UserID
 	userAccount.Email = token.Email
@@ -65,6 +70,8 @@ func UpdateUserAccount(w http.ResponseWriter, r *http.Request) {
 
 	if savedUser.Error != nil {
 		log.Println(savedUser.Error)
+		fmt.Fprint(w, "Error updating user information")
+		return
 	}
 	log.Println("User account updated")
 	json.NewEncoder(w).Encode(savedUser)
