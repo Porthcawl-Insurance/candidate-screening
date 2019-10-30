@@ -27,7 +27,7 @@ func SendApiRequest(zip int) (resp *http.Response) {
 	log.Println("Sending API request")
 	apiUrl := viper.GetString("api.url")
 	apiKey := viper.GetString("api.appid")
-	url := fmt.Sprintf("%szip=%d&appid=%s", apiUrl, zip, apiKey)
+	url := fmt.Sprintf("%szip=%05d&appid=%s", apiUrl, zip, apiKey)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
