@@ -47,6 +47,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	if createdUser.Error != nil {
 		log.Println(errMessage)
+		fmt.Fprint(w, "Error creating new user, email already exists")
+		return
 	}
 	log.Println("Successfully created user")
 	fmt.Fprint(w, "User successfully created, you may now log in")
