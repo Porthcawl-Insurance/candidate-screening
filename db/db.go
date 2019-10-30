@@ -19,15 +19,8 @@ func ConnectDB() *gorm.DB {
 	if err != nil {
 		panic(fmt.Errorf("fatal error config file: %s \n", err))
 	}
-	username := viper.Get("db.user")
-	password := viper.Get("db.password")
-	databasePort := viper.Get("db.port")
-	databaseName := viper.Get("db.name")
-	databaseHost := viper.Get("db.url")
 
-	dbURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", databaseHost, databasePort, username, databaseName, password)
-
-	db, err := gorm.Open(viper.GetString("db.schema"), dbURI)
+	db, err := gorm.Open(viper.GetString("db.schema"), viper.GetString("db.url"))
 	if err != nil {
 		fmt.Println("Error connecting to db:", err)
 		panic(err)

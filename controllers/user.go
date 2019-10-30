@@ -11,6 +11,7 @@ import (
 	"github.com/cyberfortress/candidate-screening/structs"
 	"github.com/cyberfortress/candidate-screening/utils"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/spf13/viper"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -116,7 +117,8 @@ func FindOne(email, password string) map[string]interface{} {
 		var resp = map[string]interface{}{"status": false, "message": "Email address not found"}
 		return resp
 	}
-	expiresAt := time.Now().Add(time.Minute * 100000).Unix()
+	timeValid, _ := time.ParseDuration(viper.GetString("token.timeValid"))
+	expiresAt := time.Now().Add(timeValid).Unix()
 
 	errf := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if errf != nil && errf == bcrypt.ErrMismatchedHashAndPassword {
@@ -135,7 +137,7 @@ func FindOne(email, password string) map[string]interface{} {
 
 	token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 
-	tokenString, error := token.SignedString([]byte("secret"))
+	tokenString, error := token.SignedString([]byte(viper.GetString("token.secret")))
 	if error != nil {
 		fmt.Println(error)
 	}

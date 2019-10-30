@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cyberfortress/candidate-screening/structs"
+	"github.com/spf13/viper"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -30,7 +31,7 @@ func JwtVerify(next http.Handler) http.Handler {
 		tk := &structs.Token{}
 
 		_, err := jwt.ParseWithClaims(header, tk, func(token *jwt.Token) (interface{}, error) {
-			return []byte("secret"), nil
+			return []byte(viper.GetString("token.secret")), nil
 		})
 
 		if err != nil {
@@ -60,7 +61,7 @@ func JwtVerifyAdmin(next http.Handler) http.Handler {
 		tk := &structs.Token{}
 
 		_, err := jwt.ParseWithClaims(header, tk, func(token *jwt.Token) (interface{}, error) {
-			return []byte("secret"), nil
+			return []byte(viper.GetString("token.secret")), nil
 		})
 
 		if err != nil {
