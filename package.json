@@ -1,0 +1,35 @@
+{
+  "name": "weather-service",
+  "version": "0.0.1",
+  "description": "This is the implementation of the weather service",
+  "author": "Chris Vaughan <vaughan99@yahoo.com>",
+  "homepage": "https://github.com/vaughan99/candidate-screening#readme",
+  "license": "ISC",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaughan99/candidate-screening.git"
+  },
+  "scripts": {
+    "populate": "scripts/populateDbFromCsv.js",
+    "test": "jest --coverage"
+  },
+  "bugs": {
+    "url": "https://github.com/vaughan99/candidate-screening/issues"
+  },
+  "dependencies": {
+    "csvtojson": "^2.0.10",
+    "express": "^4.17.1",
+    "nedb-promise": "^2.0.1",
+    "request-promise-native": "^1.0.8"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}

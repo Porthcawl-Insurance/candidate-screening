@@ -1,5 +1,5 @@
-venv
-addresses.csv
-emails.csv
-names.csv
+coverage/
+node_modules/
+package-lock.json
+users.db
 *.idea
