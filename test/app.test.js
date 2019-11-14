@@ -41,13 +41,20 @@ describe('POST /admin/signup', () => {
 });
 
 describe('POST /admin/login', () => {
-  it('logs in with an admin', () => request(app)
-    .post('/admin/login')
-    .query({ email: admin.email, password })
-    .expect(200)
-    .then((res) => {
-      expect(res.body.token).to.be.a('string');
-    }));
+  it('logs in with an admin', () =>
+    request(app)
+      .post('/admin/login')
+      .query({ email: admin.email, password })
+      .expect(200)
+      .then((res) => {
+        expect(res.body.token).to.be.a('string');
+      }));
+
+  it('fails login with invalid email', () =>
+    request(app)
+      .post('/admin/login')
+      .query({ email: 'invalid@test.com', password })
+      .expect(401, 'Unauthorized'));
 });
 
 describe('GET /users', () => {
