@@ -55,6 +55,12 @@ describe('POST /admin/login', () => {
       .post('/admin/login')
       .query({ email: 'invalid@test.com', password })
       .expect(401, 'Unauthorized'));
+
+  it('fails login with invalid password', () =>
+    request(app)
+      .post('/admin/login')
+      .query({ email: admin.email, password: 'invalidpassword' })
+      .expect(401, 'Unauthorized'));
 });
 
 describe('GET /users', () => {

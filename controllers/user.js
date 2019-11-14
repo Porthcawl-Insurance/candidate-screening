@@ -26,7 +26,6 @@ exports.getUserWeather = async (req, res, next) => {
     if (!user) return res.status(404).send('User not found.');
 
     const { lat, lng } = await getLatLng(user.address, user.city, user.state);
-    console.log(lat, lng);
     const weather = await getWeather(lat, lng);
 
     return res.send(`It is${weather.precipType ? '' : ' NOT'} raining where this user lives.`);
