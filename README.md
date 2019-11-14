@@ -4,8 +4,8 @@
 
 * Node v12 is assumed, you can use [NVM](https://github.com/nvm-sh/nvm#install--update-script) to install if needed
 * Ensure that the [MongoDB](https://www.mongodb.com/download-center/community) community server is installed
-* Run `npm install` and `npm run db:seed` from the app directory
 * Create the env file with `cp .env.example .env`, I will provide my Geocodio and Darksky keys via email
+* Run `npm install` and `npm run db:seed` from the app directory
 
 ### Using the app
 
