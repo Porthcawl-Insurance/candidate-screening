@@ -1,0 +1,49 @@
+{
+  "name": "candidate-screening",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node app.js",
+    "db:seed": "node scripts/import-dataset.js",
+    "test": "NODE_ENV=test nyc mocha",
+    "test-watch": "NODE_ENV=test nodemon --exec 'nyc mocha -R min'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eking1082/candidate-screening.git"
+  },
+  "author": "Evan King",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-chai-friendly": "^0.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "mocha": "^6.2.2",
+    "nock": "^11.7.0",
+    "nodemon": "^1.19.4",
+    "nyc": "^14.1.1",
+    "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "bluebird": "^3.7.1",
+    "body-parser": "^1.19.0",
+    "csvtojson": "^2.0.10",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.9",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.5"
+  },
+  "mocha": {
+    "spec": "test/**/*.test.js",
+    "exit": true
+  }
+}
