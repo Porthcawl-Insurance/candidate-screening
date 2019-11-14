@@ -10,6 +10,7 @@ adminSchema.pre('save', function save(next) {
   if (!this.isModified('password')) return next();
 
   bcrypt.hash(this.password, 10, (err, hash) => {
+    /* istanbul ignore next */
     if (err) return next(err);
 
     this.password = hash;

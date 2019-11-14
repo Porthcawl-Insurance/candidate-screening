@@ -38,6 +38,12 @@ describe('POST /admin/signup', () => {
       .then((admin) => {
         expect(admin.email).to.equal(email);
       }));
+
+  it('fails with an email that already exists', () =>
+    request(app)
+      .post('/admin/signup')
+      .query({ email: admin.email, password })
+      .expect(409, 'Admin already exists with that email.'));
 });
 
 describe('POST /admin/login', () => {
@@ -72,6 +78,24 @@ describe('GET /users', () => {
       .then((res) => {
         expect(res.body.length).to.equal(3);
       }));
+
+  it('fails with an invalid JWT', () => {
+    const invalidToken = jwt.sign({ email: 'invalid@test.com' }, process.env.JWT_SECRET);
+
+    return request(app)
+      .get('/users')
+      .set('Authorization', `Bearer ${invalidToken}`)
+      .expect(401, 'Unauthorized');
+  });
+
+  it('fails with an invalid email in JWT', () => {
+    const invalidToken = jwt.sign({ email: 'invalid@test.com', adminId: admin.id }, process.env.JWT_SECRET);
+
+    return request(app)
+      .get('/users')
+      .set('Authorization', `Bearer ${invalidToken}`)
+      .expect(401, 'Unauthorized');
+  });
 });
 
 describe('GET /users/:userId/weather', () => {
@@ -99,6 +123,7 @@ describe('GET /users/:userId/weather', () => {
       .expect(200, 'It is raining where this user lives.');
   });
 
+
   it('gets the weather for a user where it is not raining', () => {
     nock('https://api.darksky.net')
       .get(/forecast\/.*/)
@@ -109,4 +134,14 @@ describe('GET /users/:userId/weather', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(200, 'It is NOT raining where this user lives.');
   });
+
+  it('fails to find user', () => request(app)
+    .get('/users/1dcd6e665e1ab26ffbb8288b/weather')
+    .set('Authorization', `Bearer ${token}`)
+    .expect(404, 'User not found.'));
+
+  it('fails with an invalid user id', () => request(app)
+    .get('/users/invalid_id/weather')
+    .set('Authorization', `Bearer ${token}`)
+    .expect(400, 'Invalid user id provided.'));
 });

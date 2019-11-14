@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const { Admin } = require('../models');
 
 const { JWT_SECRET, NODE_ENV } = process.env;
+
+/* istanbul ignore next */
 const jwtOptions = {
   expiresIn: NODE_ENV === 'dev' ? '7d' : '1h',
 };
@@ -17,9 +19,7 @@ exports.postSignup = async (req, res) => {
 };
 
 exports.postLogin = async (req, res) => {
-  const { email } = req.query;
-
-  const admin = await Admin.findOne({ email });
+  const { user: admin } = req;
   const token = jwt.sign({ email: admin.email, adminId: admin.id }, JWT_SECRET, jwtOptions);
 
   return res.json({ token });

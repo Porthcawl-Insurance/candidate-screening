@@ -26,6 +26,7 @@ app.post('/admin/login', passport.authenticate('local', { session: false }), adm
 app.get('/users', passport.authenticate('jwt', { session: false }), userController.getUsers);
 app.get('/users/:userId/weather', passport.authenticate('jwt', { session: false }), userController.getUserWeather);
 
+/* istanbul ignore next */
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error(err);

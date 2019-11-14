@@ -16,6 +16,7 @@ mongoose.connect(connectionString, {
   useUnifiedTopology: true,
 });
 
+/* istanbul ignore next */
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('MongoDB connection error. Please make sure MongoDB is running.');
