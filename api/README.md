@@ -40,7 +40,7 @@ The following endpoints are available:
 ### Login
 To obtain a token for use in checking for rain, utilize the curl command below for any registered user (any user in dataset.csv).
 
-`curl -i -X POST "localhost:8000/api/v1/login" -d '{"email": "<email address>", "password": "<password>"}'`
+`curl -i -H "Content-Type: application/json" -d '{"email": "<email>", "password": "<password>"}'  -XPOST "localhost:8000/api/v1/login"`
 
 ### Determine if there is rain
 Use the token provided in the response json from login to pass as the token in the X-Access-Token header.
