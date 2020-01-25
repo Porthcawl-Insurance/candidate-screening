@@ -1,0 +1,52 @@
+otenki
+=======
+RESTful API that tells you if it's raining over _______________'s head.
+
+Endpoint(s)
+-----------
+**/api/rain/{uid}**
+  Returns JSON object ``{'is_raining': boolean}`` if ``uid`` and weather data found, else ``{'error': 'error message'}``.
+
+Requirements
+------------
+
+- Python 3.6+
+- Docker
+- PostgreSQL
+
+Run
+---
+- Clone repository, edit environment values, and run: ::
+
+    $ git clone --single-branch --branch otenki https://github.com/kylepw/candidate-screening.git && cd candidate-screening
+    $ cp env_file .env && vim .env
+    $ docker-compose up --build
+
+- Note: make sure other instances of PostgreSQL at port 5432 on your machine (``ps aux | grep 'postgres'``).
+
+Usage
+-----
+- Choose a ``unique_id`` from the database (replace ``???`` below with ``POSTGRES_PASSWORD`` value in ``.env``): ::
+
+    $ psql postgresql://otenki:???@localhost:5432/otenki -c "select unique_id from people;"
+
+- Call the API (replace ``{uid}`` with the ``unique_id``): ::
+
+    $ curl -i http://localhost:8000/api/rain/{uid}
+
+- Or enter the ``unique_id`` in the frontend from your browser: ::
+
+    $ open http://localhost:8000
+
+Tests
+-----
+::
+
+    $ git clone https://github.com/kylepw/candidate-screening.git && cd candidate-screening
+    $ python -m venv venv && source venv/bin/activate
+    (venv) $ pip install --upgrade pip && pip install -r requirements.txt
+    (venv) $ python -m unittest
+
+License
+-------
+`MIT License <https://github.com/kylepw/candidate-screening/blob/master/LICENSE>`_

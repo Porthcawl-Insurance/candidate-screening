@@ -1,0 +1,1 @@
+COPY people(address,city,state,zip,email,first_name,last_name) FROM '/docker-entrypoint-initdb.d/dataset.csv' CSV HEADER;

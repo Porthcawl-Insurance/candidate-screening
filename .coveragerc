@@ -1,0 +1,9 @@
+[run]
+omit = 
+    */__pycache__/*
+    */venv/*
+    */conf/*
+    */.git/*
+    */tests/*
+    *settings.py*
+    *__init__.py*
