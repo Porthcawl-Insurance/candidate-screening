@@ -22,7 +22,7 @@ Run
     $ cp env_file .env && vim .env
     $ docker-compose up --build
 
-- Note: make sure other instances of PostgreSQL at port 5432 on your machine (``ps aux | grep 'postgres'``).
+- Note: make sure other instances of PostgreSQL are not running on your machine's port 5432 (``ps aux | grep 'postgres'``).
 
 Usage
 -----
