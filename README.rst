@@ -42,10 +42,12 @@ Tests
 -----
 ::
 
-    $ git clone https://github.com/kylepw/candidate-screening.git && cd candidate-screening
+    $ cd candidate-screening
     $ python -m venv venv && source venv/bin/activate
     (venv) $ pip install --upgrade pip && pip install -r requirements.txt
-    (venv) $ python -m unittest
+    (venv) $ docker run --rm --name otenkitest -e POSTGRES_USER=otenkitest -e POSTGRES_PASSWORD=pass -p "5432:5432" -d postgres:12.1
+    (venv) $ coverage run -m unittest && coverage report
+    (venv) $ docker stop otenkitest
 
 License
 -------
