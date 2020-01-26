@@ -5,7 +5,12 @@ RESTful API that tells you if it's raining over _______________'s head.
 Endpoint(s)
 -----------
 **/api/rain/{uid}**
-  Returns JSON object ``{'is_raining': boolean}`` if ``uid`` and weather data found, else ``{'error': 'error message'}``.
+  Returns JSON object ``{'is_raining': boolean}`` if the unique id ``uid`` is valid and weather data found, else ``{'error': 'error message'}``.
+
+Web Interface
+-------------
+**/**
+  Raining? Web page displays a "Yes," "No," "Maybe," or error message after a unique id ``uid`` is submitted.
 
 Requirements
 ------------
@@ -34,7 +39,7 @@ Usage
 
     $ curl -i http://localhost:8000/api/rain/{uid}
 
-- Or enter the ``unique_id`` in the frontend from your browser: ::
+- Or enter the ``unique_id`` from the web interface in your browser: ::
 
     $ open http://localhost:8000
 
