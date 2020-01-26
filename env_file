@@ -1,0 +1,18 @@
+## NOTE: Replace all '???' values before deployment. ##
+
+# Flask
+# python -c 'import secrets; print(secrets.token_urlsafe(16))'
+SECRET_KEY=???
+
+# Database
+POSTGRES_USER=otenki
+POSTGRES_PASSWORD=???
+
+# Replace '???' with POSTGRES_PASSWORD value above.
+SQLALCHEMY_DATABASE_URI=postgresql://otenki:???@db:5432/otenki
+
+SQLALCHEMY_TRACK_MODIFICATIONS=False
+
+# OpenWeather API
+# Get app key here: https://openweathermap.org/home/sign_up
+OW_APP_KEY=???

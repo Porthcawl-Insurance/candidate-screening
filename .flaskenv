@@ -1,0 +1,2 @@
+FLASK_APP=otenki
+FLASK_ENV=development
