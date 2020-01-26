@@ -24,7 +24,6 @@ class TestGetRainStatus(unittest.TestCase):
                 'OW_APP_KEY': '12345',
             }
         )
-        self.client = self.app.test_client()
         with self.app.app_context():
             db.create_all()
             self.populate_db()
@@ -49,11 +48,7 @@ class TestGetRainStatus(unittest.TestCase):
             zip='90001',
         )
         no_loc = People(
-            last_name='Appleseed',
-            first_name='Johnny',
-            unique_id=self.no_loc_uid,
-            city='Austin',
-            zip='73301',
+            last_name='Appleseed', first_name='Johnny', unique_id=self.no_loc_uid,
         )
         for p in (p1, no_loc):
             db.session.add(p)
@@ -67,7 +62,22 @@ class TestGetRainStatus(unittest.TestCase):
     def test_person_without_a_city_or_zipcode(self):
         with self.app.app_context():
             with self.assertRaises(HTTPError):
-                get_rain_status(self.no_loc_uid)
+                with patch('otenki.views.api.current_app.logger.error') as mock_error:
+                    get_rain_status(self.no_loc_uid)
+            mock_error.assert_called_once()
+
+    @patch('otenki.views.api.requests.get')
+    def test_uid_with_only_zip_code_with_successful_response(self, mock_get):
+        with self.app.app_context():
+            p = (
+                db.session.query(People)
+                .filter(People.unique_id == self.no_loc_uid)
+                .first()
+            )
+            p.zip = '90210'
+            db.session.commit()
+            mock_get.return_value.json.return_value = {'weather': [{'main': 'Rain'}]}
+            self.assertEqual(get_rain_status(self.has_loc_uid), {'is_raining': True})
 
     @patch('otenki.views.api.requests.get')
     def test_valid_uid_with_successful_response(self, mock_get):
@@ -98,14 +108,12 @@ class TestRain(unittest.TestCase):
 
         self.app.config['OW_APP_KEY'] = None
 
-        with self.app.test_client() as c:
-            r = c.get('/api/rain/')
+        r = self.client.get('/api/rain/')
         self.assertIn('error', r.json)
         self.assertEqual(r.status_code, 404)
 
     def test_bad_uuid_value(self):
-        with self.client as c:
-            r = c.get('/api/rain/$$$')
+        r = self.client.get('/api/rain/$$$')
         self.assertEqual(r.status_code, 404)
         self.assertIn(b'Invalid ID', r.data)
 
@@ -113,8 +121,7 @@ class TestRain(unittest.TestCase):
     def test_http_error(self, mock_get_rain_status):
         with self.app.app_context():
             with patch('otenki.views.api.current_app.logger.error') as mock_error:
-                with self.client as c:
-                    r = c.get('/api/rain/123')
+                r = self.client.get('/api/rain/123')
         mock_error.assert_called_once()
         self.assertEqual(r.status_code, 404)
         self.assertIn(b'No data available', r.data)
@@ -122,7 +129,6 @@ class TestRain(unittest.TestCase):
     @patch('otenki.views.api.get_rain_status', side_effect=Exception())
     def test_other_error(self, mock_get_rain_status):
         with self.app.app_context():
-            with self.client as c:
-                r = c.get('/api/rain/123')
+            r = self.client.get('/api/rain/123')
         self.assertEqual(r.status_code, 404)
         self.assertIn(b'404 Not Found', r.data)

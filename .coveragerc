@@ -6,4 +6,3 @@ omit =
     */.git/*
     */tests/*
     *settings.py*
-    __init__.py
