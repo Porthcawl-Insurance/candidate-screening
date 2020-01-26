@@ -1,8 +1,6 @@
-import os
 from otenki import create_app, db
 from otenki.models import People
-from otenki.settings import basedir
-from otenki.views.api import DataError, get_rain_status, HTTPError, _valid_uuid
+from otenki.views.api import get_rain_status, HTTPError, _valid_uuid
 import unittest
 from unittest.mock import patch
 from uuid import uuid4
@@ -43,8 +41,20 @@ class TestGetRainStatus(unittest.TestCase):
         self.has_loc_uid = str(uuid4())
         self.no_loc_uid = str(uuid4())
 
-        p1 = People(last_name='Bond', first_name='Harry', unique_id=self.has_loc_uid, city='Los Angeles', zip='90001')
-        no_loc = People(last_name='Appleseed', first_name='Johnny', unique_id=self.no_loc_uid, city='Austin', zip='73301')
+        p1 = People(
+            last_name='Bond',
+            first_name='Harry',
+            unique_id=self.has_loc_uid,
+            city='Los Angeles',
+            zip='90001',
+        )
+        no_loc = People(
+            last_name='Appleseed',
+            first_name='Johnny',
+            unique_id=self.no_loc_uid,
+            city='Austin',
+            zip='73301',
+        )
         for p in (p1, no_loc):
             db.session.add(p)
         db.session.commit()

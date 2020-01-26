@@ -1,6 +1,4 @@
-import os
 from otenki import create_app
-from otenki.settings import basedir
 import unittest
 from unittest.mock import patch
 
