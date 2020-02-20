@@ -1,7 +1,12 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+# frozen_string_literal: true
+
+return unless User.all.count.zero? && !Rails.env.test?
+
+require 'csv'
+require 'application_record'
+require 'user'
+cyber_fortress_seed_file    = File.read(Rails.root.join('db', 'csv', 'dataset.csv'))
+cyber_fortress_seed_csv     = CSV.parse(cyber_fortress_seed_file, headers: true, encoding: 'ISO-8859-1')
+cyber_fortress_user_hash    = cyber_fortress_seed_csv.map(&:to_h)
+cyber_fortress_user_hash.each { |row| row.merge!(password: 'password', password_confirmation: 'password') }
+User.create cyber_fortress_user_hash
