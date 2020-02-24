@@ -1,0 +1,21 @@
+html {
+  color: $base-font-color;
+  font-family: $base-font-family;
+  font-size: $body-font-size;
+  @include respond-to($breakpoint-medium){
+    font-size: 11px;
+  }
+  @include respond-to($breakpoint-small){
+    font-size: 8px;
+  }
+}
+h1 {
+  font-size: 3.4375em;
+  font-weight: bold;
+  margin: 0em;
+}
+
+h2 {
+  font-size: 1.75em;
+  font-weight: normal !important;
+}

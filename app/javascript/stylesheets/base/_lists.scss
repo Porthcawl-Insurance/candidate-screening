@@ -1,0 +1,19 @@
+ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li{
+  border-top: $base-border-white;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  &.orange{
+    border-top: $base-border-orange;
+  }
+  &.font-color{
+    border-top: $base-border-font;
+  }
+}

@@ -1,0 +1,17 @@
+.urnicus-raining{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .urnicus-raining-description{
+    height: 10em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 1em;
+    color: $outrageous-orange;
+    .urnicus-raining-expires{
+      text-align:right;
+      font-size: .5em;
+    }
+  }
+}
