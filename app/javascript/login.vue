@@ -27,7 +27,7 @@
           v-if="raining_status.raining_status_can_be_refreshed_at != undefined"
           class="urnicus-raining-expires"
         >
-          This update will not change until
+          You can open my window as many times as you want, but the weather will not change again until at least
           {{ raining_status.raining_status_can_be_refreshed_at }}
         </div>
       </div>

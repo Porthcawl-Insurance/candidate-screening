@@ -66,7 +66,6 @@ RSpec.describe User::RainingStatus, type: :model do
       it 'updates user' do
         allow(new).to receive(:return_weather_service).and_return(nil)
         expect { new.update_is_it_raining }.to change(new.user, :raining).to(nil)
-        expect { new.update_is_it_raining }.to change(new.user, :raining_updated_at).to(nil)
       end
     end
 
