@@ -1,0 +1,31 @@
+$_header_height: 14em;
+$_logo_font_size_integer: 8;
+.urnicus-header{
+  position: relative;
+  text-align: center;
+  padding-top: 1em;
+  margin-bottom: 2em;
+  height: $_header_height;
+  font-family: $logo-font-family;
+  .urnicus-logo{
+    position: absolute;
+    width: 12em;
+    height: 12em;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    opacity: 0.75;
+  }
+  .urnicus-title{
+    position: absolute;
+    font-size: ($_logo_font_size_integer) * 1em;
+    color: $outrageous-orange;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: ($_header_height/($_logo_font_size_integer*8));
+  }
+}
+

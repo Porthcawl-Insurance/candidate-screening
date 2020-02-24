@@ -1,0 +1,32 @@
+require:
+  - rubocop-performance
+  - rubocop-rspec
+  - rubocop-rails
+
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+    - 'bin/**/*'
+    - 'tmp/**/*'
+    - 'db/migrate/folder/*'
+    - 'node_modules/**/*'
+    - 'test/**/*'
+
+Layout/LineLength:
+  Max: 150
+
+
+Metrics/MethodLength:
+  Max: 172
+
+Style/Documentation:
+  Enabled: false
+
+Rails/BulkChangeTable:
+  Enabled: false
+
+Metrics/BlockLength:
+  Max: 100
+
+RSpec/MultipleExpectations:
+  Enabled: false

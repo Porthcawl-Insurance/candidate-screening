@@ -1,0 +1,29 @@
+.urnicus-container{
+  &.orange{
+    background-color: $outrageous-orange;
+    color: white;
+  }
+  &.white{
+    background-color: $viewport-background-color;
+    color: $base-font-color;
+  }
+  &.center{
+    padding: 1em;
+  }
+}
+.urnicus-section{
+  max-width: $breakpoint-large;
+  margin: auto;
+  padding: 2em;
+  margin-top: 3em;
+  margin-bottom: 3em;
+  &.half{
+    max-width: $breakpoint-large/2;
+    border: $base-border-font;
+    background-color: #ffffff;
+    margin-bottom: 0em;
+    @include respond-to($breakpoint-small){
+      width: 90%;
+    }
+  }
+}

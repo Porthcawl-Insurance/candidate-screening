@@ -1,0 +1,80 @@
+//Media Queries
+@mixin respond-to($breakpoint){
+  @media (max-width: $breakpoint){
+    @content
+  }
+}
+
+@mixin respond-to-min($breakpoint){
+  @media (min-width: $breakpoint){
+    @content
+  }
+}
+
+
+$outrageous-orange:     #FF612A;
+$base-font-size:        16px;
+$body-font-size:        16px;
+$base-font-color:       #393939;
+$logo-font-family:      'Orbitron', sans-serif;
+$base-font-family:      'Roboto', sans-serif;
+$base-line-height:      1.5;
+
+$viewport-background-color:           #FBFBFB;
+
+// Breakpoints
+$breakpoint-small-small:                        30em;
+$breakpoint-small:                              40.000em;  //640
+$breakpoint-medium-small:                       47.000em;
+$breakpoint-medium:                             60.000em;  //960
+$breakpoint-medium-large:                       67.000em;
+$breakpoint-large:                              75.000em;  //1200
+$breakpoint-xlarge:                             100.000em; //1600px
+
+$breakpoint-xsmall-max:                         ($breakpoint-small - 1);
+$breakpoint-small-max:                          ($breakpoint-medium - 1);
+$breakpoint-medium-max:                         ($breakpoint-large - 1);
+$breakpoint-large-max:                          ($breakpoint-xlarge - 1);
+
+$base-spacing:        1.5em;
+$base-border-color:           $base-font-color;
+$base-border-style:           .063em solid;
+$base-border:                 $base-border-style $base-border-color;
+$base-border-orange:          $base-border-style $outrageous-orange;
+$base-border-white:          $base-border-style white;
+$base-border-font:          $base-border-style $base-font-color;
+
+// Gutters
+$global-gutter:                                  1.875em;
+$global-small-gutter:                            0.938em;
+$global-medium-gutter:                           2.500em;
+$global-large-gutter:                            4.375em;
+
+
+  //  Containers
+$container-max-width:                    75em;
+$container-xsmall-max-width:             46.875em;
+$container-small-max-width:              56.250em;
+$container-large-max-width:              100.000em;
+
+$container-padding-horizontal:           0.938em;
+$container-padding-horizontal-s:         $global-gutter;
+$container-padding-horizontal-m:         $global-medium-gutter;
+
+  // Used in margin, section, list
+$global-margin:                                  1.250em;
+$global-small-margin:                            0.625em;
+$global-medium-margin:                           2.500em;
+$global-large-margin:                            4.375em;
+$global-xlarge-margin:                           8.750em;
+
+// Backgrounds
+
+$global-background:                              #FBFBFB;
+$global-white-background:                        #FFFFFF;
+$global-muted-background:                        #f8f8f8;
+$global-primary-background:                      #1e87f0;
+$global-secondary-background:                    #222;
+$global-success-background:                      #32d296;
+$global-warning-background:                      #faa05a;
+$global-danger-background:                       #f0506e;
