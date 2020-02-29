@@ -30,4 +30,5 @@
 yarn-debug.log*
 .yarn-integrity
 
+#IntelliJ Bloat
 /.idea/*
