@@ -3,3 +3,6 @@ addresses.csv
 emails.csv
 names.csv
 *.idea
+
+# MacOS
+.DS_Store
